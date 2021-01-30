@@ -3,6 +3,7 @@ package com.devdossantos.pokedexcompose.view
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.print.PrintAttributes
 import android.transition.Transition
 import android.widget.TableRow
 import android.widget.Toast
@@ -20,6 +21,7 @@ import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.VerticalAlignmentLine
@@ -56,6 +58,17 @@ class MainActivity : AppCompatActivity() {
                     colors = lightColors()
                 ) {
                     PokeList(it)
+                    FloatingActionButton(
+                        onClick = {
+                        Toast.makeText(
+                            this,
+                            "Deve abrir fav",
+                            Toast.LENGTH_LONG
+                        ).show()
+
+                    }) {
+
+                    }
                 }
             }
         }
@@ -106,9 +119,9 @@ class MainActivity : AppCompatActivity() {
 
             Card(
                 shape = RoundedCornerShape(12.dp),
-                elevation = 4.dp,
+                elevation = 6.dp,
                 modifier = Modifier
-                    .padding(start = 20.dp, end = 20.dp, top = 20.dp)
+                    .padding(start = 20.dp, end = 20.dp, top = 10.dp, bottom = 10.dp)
                     .border(
                         width = 1.dp,
                         color = GetBackgroundColor().getColor(type),
