@@ -6,12 +6,12 @@ import com.devdossantos.pokedexcompose.api.model.response.stats.StatsModel
 import com.devdossantos.pokedexcompose.api.model.response.type.TypeModel
 
 data class PokemonModel(
-    val abilities: List<AbilityModel>,
-    val height: Int,
-    val id: Int,
-    val name: String,
-    val sprites: SpriteModel,
-    val stats: List<StatsModel>,
-    val types: List<TypeModel>,
-    val weight: Int
+    val abilities: List<AbilityModel>? = null,
+    val height: Int? = null,
+    val id: Int? = null,
+    val name: String? = null,
+    val sprites: SpriteModel? = null,
+    val stats: List<StatsModel>? = null,
+    val types: List<TypeModel>? = null,
+    val weight: Int? = null
 )
