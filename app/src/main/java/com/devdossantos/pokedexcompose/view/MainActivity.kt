@@ -6,21 +6,15 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.setContent
-import androidx.lifecycle.ViewModelProvider
-import com.devdossantos.pokedexcompose.api.repository.PokeRepository
 import com.devdossantos.pokedexcompose.viewmodel.PokeViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : AppCompatActivity() {
 
-    private lateinit var _pokeViewModel: PokeViewModel
+    private val _pokeViewModel: PokeViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        _pokeViewModel = ViewModelProvider(
-            this,
-            PokeViewModel.PokeViewModelFactory(PokeRepository())
-        ).get(PokeViewModel::class.java)
 
         _pokeViewModel.getList().observe(this) {
             it.results.forEach {
