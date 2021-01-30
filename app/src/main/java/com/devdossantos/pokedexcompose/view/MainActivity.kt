@@ -7,16 +7,16 @@ import android.transition.Transition
 import android.widget.TableRow
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyColumnFor
 import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,6 +25,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.VerticalAlignmentLine
 import androidx.compose.ui.platform.ContextAmbient
 import androidx.compose.ui.platform.setContent
+import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.bumptech.glide.Glide
@@ -108,6 +109,11 @@ class MainActivity : AppCompatActivity() {
                 elevation = 4.dp,
                 modifier = Modifier
                     .padding(start = 20.dp, end = 20.dp, top = 20.dp)
+                    .border(
+                        width = 1.dp,
+                        color = GetBackgroundColor().getColor(type),
+                        shape = RoundedCornerShape(12.dp)
+                    )
                     .fillMaxWidth()
                     .clickable(onClick = {
                         favoriteColor.value =
@@ -117,8 +123,10 @@ class MainActivity : AppCompatActivity() {
             ) {
                 Box(
                     modifier = Modifier
+
                         .height(120.dp)
                         .padding(16.dp)
+
                 ) {
 
                     Column() {
@@ -150,18 +158,6 @@ class MainActivity : AppCompatActivity() {
                             colorFilter = null
                         )
                     }
-//                    Image(
-//                        bitmap = it.asImageBitmap(),
-//                        modifier = Modifier
-//                            .fillMaxWidth()
-//                            .height(120.dp)
-//                            .background(Color.Transparent)
-//                            .align(Alignment.BottomEnd),
-//                        alignment = Alignment.BottomEnd,
-//                        contentScale = ContentScale.Fit,
-//                        alpha = 1f,
-//                        colorFilter = null
-//                    )
 
                 }
 
