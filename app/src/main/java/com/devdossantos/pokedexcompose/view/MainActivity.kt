@@ -4,13 +4,17 @@ import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.transition.Transition
+import android.widget.TableRow
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyColumnFor
+import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -31,11 +35,12 @@ import com.devdossantos.pokedexcompose.viewmodel.PokeViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
+@ExperimentalFoundationApi
 class MainActivity : AppCompatActivity() {
 
     private val _pokeViewModel: PokeViewModel by viewModel()
 
-        override fun onCreate(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         getList()
@@ -57,19 +62,25 @@ class MainActivity : AppCompatActivity() {
 
     @Composable
     private fun PokeList(pokemonList: MutableList<PokemonModel>) {
-        val context = ContextAmbient.current
-        LazyColumnFor(items = pokemonList) { pokemon ->
-            PokemonRow(pokemon = pokemon, onPokeClick = {
 
+        LazyVerticalGrid(
+            cells = GridCells.Adaptive(220.dp),
+            content = {
+                items(items = pokemonList) { pokemon ->
+                    PokemonRow(pokemon = pokemon, onPokeClick = {
+
+                    })
+                }
             })
-        }
+
+
     }
 
     @Composable
     private fun PokemonRow(pokemon: PokemonModel, onPokeClick: (PokemonModel) -> Unit) {
         var remember = remember { mutableStateOf(false) }
         var favoriteColor = remember { mutableStateOf(Color.Transparent) }
-        var bitmap by remember { mutableStateOf<Bitmap?>(null)}
+        var bitmap by remember { mutableStateOf<Bitmap?>(null) }
 
         Glide.with(ContextAmbient.current).asBitmap()
             .load(pokemon.sprites?.front_default)
@@ -108,7 +119,7 @@ class MainActivity : AppCompatActivity() {
                     modifier = Modifier
                         .height(120.dp)
                         .padding(16.dp)
-                ){
+                ) {
 
                     Column() {
                         Text(
@@ -125,7 +136,7 @@ class MainActivity : AppCompatActivity() {
                         }
                     }
 
-                    bitmap?.let{
+                    bitmap?.let {
                         Image(
                             bitmap = it.asImageBitmap(),
                             modifier = Modifier
@@ -139,6 +150,18 @@ class MainActivity : AppCompatActivity() {
                             colorFilter = null
                         )
                     }
+//                    Image(
+//                        bitmap = it.asImageBitmap(),
+//                        modifier = Modifier
+//                            .fillMaxWidth()
+//                            .height(120.dp)
+//                            .background(Color.Transparent)
+//                            .align(Alignment.BottomEnd),
+//                        alignment = Alignment.BottomEnd,
+//                        contentScale = ContentScale.Fit,
+//                        alpha = 1f,
+//                        colorFilter = null
+//                    )
 
                 }
 
@@ -147,11 +170,10 @@ class MainActivity : AppCompatActivity() {
     }
 
 
-
     private fun favoriteMessage(it: Boolean, name: String): Color {
         var color = Color.Transparent
 
-        if (it){
+        if (it) {
             Toast.makeText(this, "Você desfavoriou o $name", Toast.LENGTH_LONG).show()
             color = Color.Transparent
         } else if (!it) {
