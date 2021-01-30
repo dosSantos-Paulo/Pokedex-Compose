@@ -41,6 +41,9 @@ android {
 }
 
 dependencies {
+    implementation 'com.balysv:material-ripple:1.0.2'
+    implementation 'com.google.android.material:material:1.2.1'
+
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.husseinala.neon:picasso:0.1.4'
     implementation 'com.husseinala.neon:glide:0.1.4'
