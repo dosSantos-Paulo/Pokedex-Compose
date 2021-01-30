@@ -1,4 +1,4 @@
-package com.devdossantos.pokedexcompose
+package com.devdossantos.pokedexcompose.view
 
 import android.os.Bundle
 import android.util.Log
