@@ -1,8 +1,10 @@
 package com.devdossantos.pokedexcompose.view
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
+import android.net.ConnectivityManager
 import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -16,7 +18,8 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.*
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.ContextAmbient
 import androidx.compose.ui.platform.setContent
@@ -41,19 +44,25 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-
-
         setContent {
-            ExtendedFAB()
-            CircularProgressIndicator(
-                color = Color.Red,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .fillMaxHeight()
-                    .padding(140.dp)
-            )
-            getList()
+
+            if (isConnected(this)) {
+                ExtendedFAB()
+                CircularProgressIndicator(
+                    color = Color.Red,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .fillMaxHeight()
+                        .padding(140.dp)
+                )
+                getList()
+            } else {
+                AlternaTiveWay()
+            }
+
         }
+
+
 
     }
 
@@ -69,6 +78,76 @@ class MainActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    @Composable
+    private fun AlternaTiveWay() {
+        Toast.makeText(this, "Sem conexção, apenas seus favoritos estão ativos", Toast.LENGTH_LONG).show()
+
+        loadPicture(
+            url = "https://www.pngkey.com/png/full/3-35940_pikachu-is-hardcore-imagenes-para-banner-png.png"
+        ).value?.let {
+            Image(
+                bitmap = it.asImageBitmap(),
+                modifier = Modifier
+                    .size(120.dp),
+                alignment = Alignment.Center,
+                contentScale = ContentScale.Fit,
+                alpha = 1f,
+                colorFilter = null
+            )
+        }
+
+        loadPicture(
+            url = "https://cdn.bulbagarden.net/upload/4/4b/Pok%C3%A9dex_logo.png"
+        ).value?.let {
+            Image(
+                bitmap = it.asImageBitmap(),
+                modifier = Modifier
+                    .size(50.dp),
+                alignment = Alignment.Center,
+                contentScale = ContentScale.Fit,
+                alpha = 1f,
+                colorFilter = null
+            )
+        }
+
+        Scaffold(
+            backgroundColor = Color.Transparent,
+            floatingActionButtonPosition = FabPosition.End,
+            floatingActionButton = {
+                ExtendedFloatingActionButton(
+                    backgroundColor = Color.Gray,
+                    contentColor = Color.White,
+                    icon = {
+                        loadPicture(
+                            url = "https://lh3.googleusercontent.com/proxy/uu3X0tP6QilOCFi0t47FKedqXiMDOmmGRjbk87wTXsH2kacxmab-fGheC6bu97GT-TKIVY3m5R7OPlBzvhz1yfI83XM-geR7tBxGP-ncmTMNPm0"
+                        ).value?.let {
+                            Image(
+                                bitmap = it.asImageBitmap(),
+                                modifier = Modifier
+                                    .size(30.dp),
+                                alignment = Alignment.BottomEnd,
+                                contentScale = ContentScale.Fit,
+                                alpha = 1f,
+                                colorFilter = null
+                            )
+                        }
+
+                    },
+                    text = { Text(text = "FAVORITOS") },
+                    modifier = Modifier
+                        .padding(10.dp)
+                        .background(Color.Transparent),
+                    onClick = {
+                        ToFav()
+
+                    })
+            }
+        ) {
+
+        }
+
     }
 
     @Composable
@@ -102,11 +181,7 @@ class MainActivity : AppCompatActivity() {
                         .padding(10.dp)
                         .background(Color.Transparent),
                     onClick = {
-                        Toast.makeText(
-                            this,
-                            "Deve abrir fav",
-                            Toast.LENGTH_LONG
-                        ).show()
+                        ToFav()
 
                     })
             }
@@ -253,6 +328,19 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+    private fun ToFav() {
+        val intent = Intent(this, FavActivity::class.java)
+        startActivity(intent)
+    }
 
+
+    fun isConnected(context: Context): Boolean {
+        val cm = context.getSystemService(CONNECTIVITY_SERVICE) as ConnectivityManager
+        if (cm != null) {
+            val ni = cm.activeNetworkInfo
+            return ni != null && ni.isConnected
+        }
+        return false
+    }
 
 }
