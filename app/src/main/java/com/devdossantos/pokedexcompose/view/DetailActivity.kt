@@ -3,6 +3,7 @@ package com.devdossantos.pokedexcompose.view
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -21,9 +22,15 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.ContextAmbient
 import androidx.compose.ui.platform.setContent
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.devdossantos.pokedexcompose.api.model.response.pokemon.PokemonModel
+import com.devdossantos.pokedexcompose.database.AppDataBase
+import com.devdossantos.pokedexcompose.database.dao.BaseDao
+import com.devdossantos.pokedexcompose.database.entity.PokemonEntity
+import com.devdossantos.pokedexcompose.database.repository.DataBaseRepository
+import com.devdossantos.pokedexcompose.database.viewmodel.DataBaseViewModel
 import com.devdossantos.pokedexcompose.utils.GetBackgroundColor
 import com.devdossantos.pokedexcompose.utils.loadPicture
 import com.devdossantos.pokedexcompose.view.ui.theme.PokedexComposeTheme
@@ -32,11 +39,19 @@ import com.devdossantos.pokedexcompose.view.ui.theme.SharedItens.Companion.getPo
 class DetailActivity : AppCompatActivity() {
     private val pokemon = getPokemon()
 
+    private val databaseViewModel = ViewModelProvider(
+        this,
+        DataBaseViewModel.DataBaseViewModelFactory(
+            DataBaseRepository(
+                AppDataBase.getDatabase(this).baseDao()
+            )
+        )
+    ).get(DataBaseViewModel::class.java)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             PokedexComposeTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
                     PokemonRow(pokemon!!)
                 }
@@ -47,7 +62,14 @@ class DetailActivity : AppCompatActivity() {
     @Composable
     private fun PokemonRow(pokemon: PokemonModel) {
         var remember = remember { mutableStateOf(false) }
-        remember.value = false
+
+        var color = Color.LightGray
+        if (remember.value) {
+            color = Color.LightGray
+        } else if (!remember.value) {
+            color = Color.Yellow
+        }
+
 
         Row(
             modifier = Modifier
@@ -106,12 +128,12 @@ class DetailActivity : AppCompatActivity() {
                                 .background(Color.Transparent)
                                 .align(Alignment.TopEnd)
                                 .clickable(onClick = {
-                                    remember.value = changeFavoriteStatus(remember.value)
+                                    remember.value = changeFavoriteStatus(pokemon, remember.value)
                                 }),
                             alignment = Alignment.TopEnd,
                             contentScale = ContentScale.Fit,
                             alpha = 1f,
-                            colorFilter = ColorFilter(getStarColor(remember.value), BlendMode.SrcIn)
+                            colorFilter = ColorFilter(color, BlendMode.SrcIn)
                         )
                     }
 
@@ -121,21 +143,30 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
-    private fun getStarColor (isFavorite: Boolean): Color {
-        var color = Color.White
-        if (isFavorite) {
-            color = Color.LightGray
-        } else if (!isFavorite) {
-            color = Color.Yellow
-        }
-        return color
-    }
+    private fun changeFavoriteStatus(pokemon: PokemonModel, isFavorite: Boolean): Boolean {
+        val tipo : MutableList<String> = mutableListOf()
 
-    private fun changeFavoriteStatus(isFavorite: Boolean): Boolean {
+        pokemon.types!!.forEach {
+            tipo.add(it.type.toString())
+        }
+
+        val newPokemon = PokemonEntity(
+            pokemon.id!!.toInt(),
+            pokemon.name.toString(),
+            pokemon.sprites!!.front_default,
+            tipo
+        )
+
         var bool = false
         if (isFavorite) {
+            databaseViewModel.deletePokemon(pokemon.id).observe(this){
+                Toast.makeText(this, "Excluido", Toast.LENGTH_LONG).show()
+            }
             bool = false
         } else if (!isFavorite) {
+            databaseViewModel.addPokemon(newPokemon).observe(this) {
+                Toast.makeText(this, "Armazenado", Toast.LENGTH_LONG).show()
+            }
             bool = true
         }
         return bool
