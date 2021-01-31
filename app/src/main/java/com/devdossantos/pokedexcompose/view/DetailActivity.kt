@@ -5,6 +5,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
@@ -27,6 +28,8 @@ import com.devdossantos.pokedexcompose.utils.loadPicture
 import com.devdossantos.pokedexcompose.view.ui.theme.PokedexComposeTheme
 import com.devdossantos.pokedexcompose.view.ui.theme.SharedItens.Companion.getPokemon
 import androidx.compose.material.Text
+import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.text.font.FontWeight
 
 class DetailActivity : AppCompatActivity() {
     private val _pokemon = getPokemon()
@@ -42,7 +45,7 @@ class DetailActivity : AppCompatActivity() {
             )
         ).get(DataBaseViewModel::class.java)
 
-        _dbViewModel.getAllPokemons().observe(this){
+        _dbViewModel.getAllPokemons().observe(this) {
             _dbList.addAll(it)
             init()
         }
@@ -135,10 +138,79 @@ class DetailActivity : AppCompatActivity() {
             ) {
                 Box(
                     modifier = Modifier
+                        .padding(start = 10.dp)
                         .fillMaxWidth()
                         .fillMaxHeight()
 
                 ) {
+
+
+                    Column() {
+                        Text(
+                            text = pokemon.name?.capitalize().toString(),
+                            fontWeight = FontWeight.Bold,
+                            color = GetBackgroundColor().getColor(_pokemon.types1),
+                            style = MaterialTheme.typography.h4
+                        )
+                        Providers(AmbientContentAlpha provides ContentAlpha.high) {
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(start = 10.dp, end = 50.dp, top = 100.dp)
+                                    .border(
+                                        width = 1.dp,
+                                        color = GetBackgroundColor().getColor(_pokemon.types1),
+                                        shape = RoundedCornerShape(6.dp)
+                                    )
+                            ) {
+                                Text(
+                                    modifier = Modifier
+                                        .padding(5.dp),
+                                    text = _pokemon.types1,
+                                    style = MaterialTheme.typography.body2
+                                )
+                            }
+                            Box(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .padding(start = 10.dp, end = 50.dp, top = 4.dp)
+                                    .border(
+                                        width = 1.dp,
+                                        color = GetBackgroundColor().getColor(_pokemon.types2),
+                                        shape = RoundedCornerShape(6.dp)
+                                    )
+
+                            ) {
+                                Text(
+                                    modifier = Modifier
+                                        .padding(5.dp),
+                                    text = _pokemon.types2,
+                                    style = MaterialTheme.typography.body2
+                                )
+                            }
+                            Box(
+                                modifier = Modifier
+
+                                    .fillMaxWidth()
+                                    .padding(start = 10.dp, end = 50.dp, top = 4.dp)
+                                    .border(
+                                        width = 1.dp,
+                                        color = Color.Black,
+                                        shape = RoundedCornerShape(6.dp)
+                                    )
+                            ) {
+                                Text(
+                                    modifier = Modifier
+                                        .padding(5.dp),
+                                    text = "id: ${_pokemon.id}",
+                                    style = MaterialTheme.typography.body2
+                                )
+                            }
+
+
+                        }
+                    }
+
 
                     loadPicture(
                         url = _pokemon.sprites!!
@@ -158,6 +230,7 @@ class DetailActivity : AppCompatActivity() {
                     }
 
 
+
                     loadPicture(
                         url = "https://pngimg.com/uploads/star/star_PNG41515.png"
                     ).value?.let {
@@ -169,7 +242,7 @@ class DetailActivity : AppCompatActivity() {
                                 .background(Color.Transparent)
                                 .align(Alignment.TopEnd)
                                 .clickable(onClick = {
-                                    when (val bool = changeFavoriteStatus(remember.value)){
+                                    when (val bool = changeFavoriteStatus(remember.value)) {
                                         true, false -> remember.value = bool
                                         null -> remember.value = remember.value
                                     }
@@ -180,6 +253,7 @@ class DetailActivity : AppCompatActivity() {
                             colorFilter = ColorFilter(getStarColor(remember.value), BlendMode.SrcIn)
                         )
                     }
+
 
                 }
 
@@ -198,10 +272,10 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun changeFavoriteStatus(isFavorite: Boolean): Boolean? {
-        var bool:Boolean? = null
+        var bool: Boolean? = null
         if (!isFavorite) {
 
-            _dbViewModel.addPokemon(getEntity()).observe(this){
+            _dbViewModel.addPokemon(getEntity()).observe(this) {
                 if (it) {
                     bool = true
                     Toast.makeText(this, "Favoritou", Toast.LENGTH_LONG).show()
@@ -213,7 +287,7 @@ class DetailActivity : AppCompatActivity() {
             }
 
         } else if (isFavorite) {
-            _dbViewModel.deletePokemon(_pokemon!!.id!!.toInt()).observe(this){
+            _dbViewModel.deletePokemon(_pokemon!!.id!!.toInt()).observe(this) {
                 if (it) {
                     bool = false
                     Toast.makeText(this, "Excluiu com sucesso", Toast.LENGTH_LONG).show()

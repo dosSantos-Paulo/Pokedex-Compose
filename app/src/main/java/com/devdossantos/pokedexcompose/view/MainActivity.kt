@@ -45,8 +45,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-
             if (isConnected(this)) {
+
                 ExtendedFAB()
                 CircularProgressIndicator(
                     color = Color.Red,
@@ -85,26 +85,14 @@ class MainActivity : AppCompatActivity() {
         Toast.makeText(this, "Sem conexção, apenas seus favoritos estão ativos", Toast.LENGTH_LONG).show()
 
         loadPicture(
-            url = "https://www.pngkey.com/png/full/3-35940_pikachu-is-hardcore-imagenes-para-banner-png.png"
-        ).value?.let {
-            Image(
-                bitmap = it.asImageBitmap(),
-                modifier = Modifier
-                    .size(120.dp),
-                alignment = Alignment.Center,
-                contentScale = ContentScale.Fit,
-                alpha = 1f,
-                colorFilter = null
-            )
-        }
-
-        loadPicture(
             url = "https://cdn.bulbagarden.net/upload/4/4b/Pok%C3%A9dex_logo.png"
         ).value?.let {
             Image(
                 bitmap = it.asImageBitmap(),
                 modifier = Modifier
-                    .size(50.dp),
+                    .size(150.dp)
+                    .fillMaxHeight()
+                    .padding(15.dp),
                 alignment = Alignment.Center,
                 contentScale = ContentScale.Fit,
                 alpha = 1f,
