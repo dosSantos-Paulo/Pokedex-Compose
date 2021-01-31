@@ -131,9 +131,9 @@ class DetailActivity : AppCompatActivity() {
                                 .background(Color.Transparent)
                                 .align(Alignment.TopEnd)
                                 .clickable(onClick = {
-                                    val bool = changeFavoriteStatus(remember.value)
-                                    if (bool != null){
-                                        remember.value = bool
+                                    when (val bool = changeFavoriteStatus(remember.value)){
+                                        true, false -> remember.value = bool
+                                        null -> remember.value = remember.value
                                     }
                                 }),
                             alignment = Alignment.TopEnd,
