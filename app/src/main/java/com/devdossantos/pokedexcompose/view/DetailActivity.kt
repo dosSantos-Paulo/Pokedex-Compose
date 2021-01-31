@@ -1,8 +1,6 @@
 package com.devdossantos.pokedexcompose.view
 
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.*
@@ -29,7 +27,6 @@ import com.devdossantos.pokedexcompose.utils.GetBackgroundColor
 import com.devdossantos.pokedexcompose.utils.loadPicture
 import com.devdossantos.pokedexcompose.view.ui.theme.PokedexComposeTheme
 import com.devdossantos.pokedexcompose.view.ui.theme.SharedItens.Companion.getPokemon
-import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DetailActivity : AppCompatActivity() {
     private val _pokemon = getPokemon()
@@ -134,7 +131,10 @@ class DetailActivity : AppCompatActivity() {
                                 .background(Color.Transparent)
                                 .align(Alignment.TopEnd)
                                 .clickable(onClick = {
-                                    remember.value = changeFavoriteStatus(remember.value)
+                                    val bool = changeFavoriteStatus(remember.value)
+                                    if (bool != null){
+                                        remember.value = bool
+                                    }
                                 }),
                             alignment = Alignment.TopEnd,
                             contentScale = ContentScale.Fit,
@@ -159,8 +159,8 @@ class DetailActivity : AppCompatActivity() {
         return color
     }
 
-    private fun changeFavoriteStatus(isFavorite: Boolean): Boolean {
-        var bool:Boolean? = false
+    private fun changeFavoriteStatus(isFavorite: Boolean): Boolean? {
+        var bool:Boolean? = null
         if (!isFavorite) {
 
             _dbViewModel.addPokemon(getEntity()).observe(this){
@@ -175,11 +175,19 @@ class DetailActivity : AppCompatActivity() {
             }
 
         } else if (isFavorite) {
-            bool = false
-            Toast.makeText(this, "Excluiu", Toast.LENGTH_LONG).show()
+            _dbViewModel.deletePokemon(_pokemon!!.id!!.toInt()).observe(this){
+                if (it) {
+                    bool = false
+                    Toast.makeText(this, "Excluiu com sucesso", Toast.LENGTH_LONG).show()
+                } else {
+                    bool = true
+                    Toast.makeText(this, "Não foi possivel excluir", Toast.LENGTH_LONG).show()
+                }
+
+            }
         }
 
-        return bool as Boolean
+        return bool
     }
 
     private fun getEntity(): PokemonEntity {
