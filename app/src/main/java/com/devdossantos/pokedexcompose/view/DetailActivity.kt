@@ -3,6 +3,7 @@ package com.devdossantos.pokedexcompose.view
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -95,6 +96,7 @@ class DetailActivity : AppCompatActivity() {
                         )
                     }
 
+
                     loadPicture(
                         url = "https://pngimg.com/uploads/star/star_PNG41515.png"
                     ).value?.let {
@@ -124,19 +126,21 @@ class DetailActivity : AppCompatActivity() {
     private fun getStarColor (isFavorite: Boolean): Color {
         var color = Color.White
         if (isFavorite) {
-            color = Color.LightGray
-        } else if (!isFavorite) {
             color = Color.Yellow
+        } else if (!isFavorite) {
+            color = Color.LightGray
         }
         return color
     }
 
     private fun changeFavoriteStatus(isFavorite: Boolean): Boolean {
         var bool = false
-        if (isFavorite) {
-            bool = false
-        } else if (!isFavorite) {
+        if (!isFavorite) {
             bool = true
+            Toast.makeText(this, "Favoritou", Toast.LENGTH_LONG).show()
+        } else if (isFavorite) {
+            bool = false
+            Toast.makeText(this, "Excluiu", Toast.LENGTH_LONG).show()
         }
         return bool
     }
