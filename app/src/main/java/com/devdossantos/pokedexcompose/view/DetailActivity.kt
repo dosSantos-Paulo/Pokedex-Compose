@@ -18,7 +18,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.setContent
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.ViewModelProvider
-import com.devdossantos.pokedexcompose.api.model.response.pokemon.PokemonModel
 import com.devdossantos.pokedexcompose.database.AppDataBase
 import com.devdossantos.pokedexcompose.database.entity.PokemonEntity
 import com.devdossantos.pokedexcompose.database.repository.DataBaseRepository
@@ -27,6 +26,7 @@ import com.devdossantos.pokedexcompose.utils.GetBackgroundColor
 import com.devdossantos.pokedexcompose.utils.loadPicture
 import com.devdossantos.pokedexcompose.view.ui.theme.PokedexComposeTheme
 import com.devdossantos.pokedexcompose.view.ui.theme.SharedItens.Companion.getPokemon
+import androidx.compose.material.Text
 
 class DetailActivity : AppCompatActivity() {
     private val _pokemon = getPokemon()
@@ -61,6 +61,7 @@ class DetailActivity : AppCompatActivity() {
             PokedexComposeTheme {
                 // A surface container using the 'background' color from the theme
                 Surface(color = MaterialTheme.colors.background) {
+//                    ExtendedFAB()
                     PokemonRow(_pokemon!!, validator)
                 }
             }
@@ -69,7 +70,47 @@ class DetailActivity : AppCompatActivity() {
     }
 
     @Composable
-    private fun PokemonRow(pokemon: PokemonModel, validator: Boolean) {
+    private fun ExtendedFAB() {
+
+        Scaffold(
+            backgroundColor = Color.Transparent,
+            floatingActionButtonPosition = FabPosition.End,
+            floatingActionButton = {
+                ExtendedFloatingActionButton(
+                    backgroundColor = Color.Gray,
+                    contentColor = Color.White,
+                    icon = {
+                        loadPicture(
+                            url = "https://lh3.googleusercontent.com/proxy/uu3X0tP6QilOCFi0t47FKedqXiMDOmmGRjbk87wTXsH2kacxmab-fGheC6bu97GT-TKIVY3m5R7OPlBzvhz1yfI83XM-geR7tBxGP-ncmTMNPm0"
+                        ).value?.let {
+                            Image(
+                                bitmap = it.asImageBitmap(),
+                                modifier = Modifier
+                                    .size(30.dp),
+                                alignment = Alignment.BottomEnd,
+                                contentScale = ContentScale.Fit,
+                                alpha = 1f,
+                                colorFilter = null
+                            )
+                        }
+
+                    },
+                    text = { Text(text = "VOLTAR") },
+                    modifier = Modifier
+                        .padding(10.dp)
+                        .background(Color.Transparent),
+                    onClick = {
+                        finish()
+                    })
+            }
+        ) {
+
+        }
+
+    }
+
+    @Composable
+    private fun PokemonRow(pokemon: PokemonEntity, validator: Boolean) {
         var remember = remember { mutableStateOf(false) }
         remember.value = validator
 
@@ -79,9 +120,6 @@ class DetailActivity : AppCompatActivity() {
                 .fillMaxWidth()
         ) {
 
-            val type = pokemon.types?.get(0)?.type?.name.toString()
-
-
             Card(
                 shape = RoundedCornerShape(12.dp),
                 elevation = 6.dp,
@@ -89,7 +127,7 @@ class DetailActivity : AppCompatActivity() {
                     .padding(start = 20.dp, end = 20.dp, top = 20.dp, bottom = 20.dp)
                     .border(
                         width = 1.dp,
-                        color = GetBackgroundColor().getColor(type),
+                        color = GetBackgroundColor().getColor(_pokemon!!.types1),
                         shape = RoundedCornerShape(12.dp)
                     )
                     .fillMaxWidth()
@@ -103,7 +141,7 @@ class DetailActivity : AppCompatActivity() {
                 ) {
 
                     loadPicture(
-                        url = pokemon.sprites!!.front_default
+                        url = _pokemon.sprites!!
                     ).value?.let {
                         Image(
                             bitmap = it.asImageBitmap(),
@@ -191,30 +229,13 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun getEntity(): PokemonEntity {
-        val newPokemon: PokemonEntity
-        val types = mutableListOf<String>()
-        _pokemon!!.types!!.forEach {
-            types.add(it.toString())
-        }
 
-        if (types.size == 1) {
-            newPokemon = PokemonEntity(
-                _pokemon!!.id!!.toInt(),
-                _pokemon!!.name!!.toString(),
-                _pokemon!!.sprites!!.front_default,
-                _pokemon!!.types!![0].type.name,
-                ""
-            )
-        } else {
-            newPokemon = PokemonEntity(
-                _pokemon!!.id!!.toInt(),
-                _pokemon!!.name!!.toString(),
-                _pokemon!!.sprites!!.front_default,
-                _pokemon!!.types!![0].type.name,
-                _pokemon!!.types!![1].type.name
-            )
-        }
-
-        return newPokemon
+        return PokemonEntity(
+            _pokemon!!.id!!.toInt(),
+            _pokemon!!.name!!.toString(),
+            _pokemon!!.sprites!!,
+            _pokemon!!.types1,
+            _pokemon!!.types2
+        )
     }
 }

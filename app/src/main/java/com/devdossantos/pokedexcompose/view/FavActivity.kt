@@ -12,36 +12,42 @@ import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
-import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.*
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.ContextAmbient
 import androidx.compose.ui.platform.setContent
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.devdossantos.pokedexcompose.api.model.response.pokemon.PokemonModel
+import com.devdossantos.pokedexcompose.database.AppDataBase
 import com.devdossantos.pokedexcompose.database.entity.PokemonEntity
+import com.devdossantos.pokedexcompose.database.repository.DataBaseRepository
+import com.devdossantos.pokedexcompose.database.viewmodel.DataBaseViewModel
 import com.devdossantos.pokedexcompose.utils.GetBackgroundColor
 import com.devdossantos.pokedexcompose.utils.loadPicture
-import com.devdossantos.pokedexcompose.view.ui.theme.SharedItens.Companion.setPokemon
-import com.devdossantos.pokedexcompose.viewmodel.PokeViewModel
-import org.koin.androidx.viewmodel.ext.android.viewModel
-
+import com.devdossantos.pokedexcompose.view.ui.theme.SharedItens
+import androidx.compose.material.Text
 
 @ExperimentalFoundationApi
-class MainActivity : AppCompatActivity() {
+class FavActivity : AppCompatActivity() {
 
-    private val _pokeViewModel: PokeViewModel by viewModel()
+    private lateinit var _dbViewModel: DataBaseViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-
+        _dbViewModel = ViewModelProvider(
+            this,
+            DataBaseViewModel.DataBaseViewModelFactory(
+                DataBaseRepository(AppDataBase.getDatabase(this).baseDao())
+            )
+        ).get(DataBaseViewModel::class.java)
 
         setContent {
             ExtendedFAB()
@@ -58,13 +64,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun getList() {
-        _pokeViewModel.getList().observe(this) {
+        _dbViewModel.getAllPokemons().observe(this) {
 
             setContent {
                 MaterialTheme(
                     colors = lightColors()
                 ) {
-                    PokeList(it)
+                    PokeList(it as MutableList<PokemonEntity>)
                     ExtendedFAB()
                 }
             }
@@ -97,17 +103,12 @@ class MainActivity : AppCompatActivity() {
                         }
 
                     },
-                    text = { Text(text = "FAVORITOS") },
+                    text = { Text(text = "VOLTAR") },
                     modifier = Modifier
                         .padding(10.dp)
                         .background(Color.Transparent),
                     onClick = {
-                        Toast.makeText(
-                            this,
-                            "Deve abrir fav",
-                            Toast.LENGTH_LONG
-                        ).show()
-
+                        finish()
                     })
             }
         ) {
@@ -117,15 +118,15 @@ class MainActivity : AppCompatActivity() {
     }
 
     @Composable
-    private fun PokeList(pokemonList: MutableList<PokemonModel>) {
+    private fun PokeList(pokemonList: MutableList<PokemonEntity>) {
 
         LazyVerticalGrid(
             cells = GridCells.Adaptive(220.dp),
             content = {
                 items(items = pokemonList) { pokemon ->
-                    PokemonRow(pokemon = pokemon, onPokeClick = {
+                    PokemonRow(pokemon = pokemon) {
 
-                    })
+                    }
                 }
             })
 
@@ -133,13 +134,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     @Composable
-    private fun PokemonRow(pokemon: PokemonModel, onPokeClick: (PokemonModel) -> Unit) {
+    private fun PokemonRow(pokemon: PokemonEntity, onPokeClick: (PokemonModel) -> Unit) {
         var remember = remember { mutableStateOf(false) }
         var favoriteColor = remember { mutableStateOf(Color.Transparent) }
         var bitmap by remember { mutableStateOf<Bitmap?>(null) }
 
         Glide.with(ContextAmbient.current).asBitmap()
-            .load(pokemon.sprites?.front_default)
+            .load(pokemon.sprites)
             .into(object : CustomTarget<Bitmap>() {
                 override fun onLoadCleared(placeholder: Drawable?) {}
                 override fun onResourceReady(
@@ -156,7 +157,7 @@ class MainActivity : AppCompatActivity() {
                 .fillMaxWidth()
         ) {
 
-            val type = pokemon.types?.get(0)?.type?.name.toString()
+            val type = listOf(pokemon.types1, pokemon.types2)
 
 
             Card(
@@ -166,7 +167,7 @@ class MainActivity : AppCompatActivity() {
                     .padding(start = 20.dp, end = 20.dp, top = 10.dp, bottom = 10.dp)
                     .border(
                         width = 1.dp,
-                        color = GetBackgroundColor().getColor(type),
+                        color = GetBackgroundColor().getColor(type[0]),
                         shape = RoundedCornerShape(12.dp)
                     )
                     .fillMaxWidth()
@@ -187,14 +188,12 @@ class MainActivity : AppCompatActivity() {
                         Text(
                             text = pokemon.name?.capitalize().toString(),
                             fontWeight = FontWeight.Bold,
-                            color = GetBackgroundColor().getColor(type),
+                            color = GetBackgroundColor().getColor(pokemon.types1),
                             style = MaterialTheme.typography.h6
                         )
                         Providers(AmbientContentAlpha provides ContentAlpha.high) {
-
-                            pokemon.types!!.forEach { type ->
-                                Text(text = type.type.name, style = MaterialTheme.typography.body2)
-                            }
+                            Text(text = pokemon.types1, style = MaterialTheme.typography.body2)
+                            Text(text = pokemon.types2, style = MaterialTheme.typography.body2)
                         }
                     }
 
@@ -219,40 +218,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun getEntity(_pokemon: PokemonModel): PokemonEntity {
-        val newPokemon: PokemonEntity
-        val types = mutableListOf<String>()
-        _pokemon!!.types!!.forEach {
-            types.add(it.toString())
-        }
-
-        if (types.size == 1) {
-            newPokemon = PokemonEntity(
-                _pokemon!!.id!!.toInt(),
-                _pokemon!!.name!!.toString(),
-                _pokemon!!.sprites!!.front_default,
-                _pokemon!!.types!![0].type.name,
-                ""
-            )
-        } else {
-            newPokemon = PokemonEntity(
-                _pokemon!!.id!!.toInt(),
-                _pokemon!!.name!!.toString(),
-                _pokemon!!.sprites!!.front_default,
-                _pokemon!!.types!![0].type.name,
-                _pokemon!!.types!![1].type.name
-            )
-        }
-
-        return newPokemon
-    }
-
-    private fun toDetail(pokemon: PokemonModel) {
+    private fun toDetail(pokemon: PokemonEntity) {
         val intent = Intent(this, DetailActivity::class.java)
-        setPokemon(getEntity(pokemon))
+        SharedItens.setPokemon(pokemon)
         startActivity(intent)
     }
-
 
 
 }
