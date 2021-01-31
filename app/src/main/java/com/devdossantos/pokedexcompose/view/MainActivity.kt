@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.*
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.layout.layout
 import androidx.compose.ui.platform.ContextAmbient
 import androidx.compose.ui.platform.setContent
 import androidx.compose.ui.text.font.FontWeight
@@ -29,6 +30,7 @@ import com.bumptech.glide.request.target.CustomTarget
 import com.devdossantos.pokedexcompose.api.model.response.pokemon.PokemonModel
 import com.devdossantos.pokedexcompose.utils.GetBackgroundColor
 import com.devdossantos.pokedexcompose.viewmodel.PokeViewModel
+import org.intellij.lang.annotations.JdkConstants
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
@@ -74,36 +76,45 @@ class MainActivity : AppCompatActivity() {
                 }
             })
 
-        ExtendedFloatingActionButton(
-            backgroundColor = Color.Gray,
-            contentColor = Color.White,
-            icon ={ bitmap.let {
-                if (it != null) {
-                    Image(
-                        bitmap = it.asImageBitmap(),
-                        modifier = Modifier
-                            .size(20.dp),
-                        alignment = Alignment.BottomEnd,
-                        contentScale = ContentScale.Fit,
-                        alpha = 1f,
-                        colorFilter = null
-                    )
-                }
+        Scaffold(
+            backgroundColor = Color.Transparent,
+            floatingActionButtonPosition = FabPosition.End,
+            floatingActionButton = {
+                ExtendedFloatingActionButton(
+                    backgroundColor = Color.Gray,
+                    contentColor = Color.White,
+                    icon = {
+                        bitmap.let {
+                            if (it != null) {
+                                Image(
+                                    bitmap = it.asImageBitmap(),
+                                    modifier = Modifier
+                                        .size(20.dp),
+                                    alignment = Alignment.BottomEnd,
+                                    contentScale = ContentScale.Fit,
+                                    alpha = 1f,
+                                    colorFilter = null
+                                )
+                            }
+                        }
+                    },
+                    text = { Text(text = "FAVORITOS") },
+                    modifier = Modifier
+                        .padding(10.dp)
+                        .background(Color.Transparent),
+                    onClick = {
+                        Toast.makeText(
+                            this,
+                            "Deve abrir fav",
+                            Toast.LENGTH_LONG
+                        ).show()
+
+                    })
             }
+        ) {
 
-            },
-            text = { Text(text = "FAVORITOS") },
-            modifier = Modifier
-                .padding(20.dp)
-                .background(Color.Transparent),
-            onClick = {
-                Toast.makeText(
-                    this,
-                    "Deve abrir fav",
-                    Toast.LENGTH_LONG
-                ).show()
+        }
 
-            })
     }
 
     @Composable
