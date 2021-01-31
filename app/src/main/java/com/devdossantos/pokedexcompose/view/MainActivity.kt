@@ -3,31 +3,25 @@ package com.devdossantos.pokedexcompose.view
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.print.PrintAttributes
-import android.transition.Transition
-import android.widget.TableRow
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
-import androidx.compose.foundation.lazy.LazyColumnFor
 import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.*
+import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.layout.VerticalAlignmentLine
 import androidx.compose.ui.platform.ContextAmbient
 import androidx.compose.ui.platform.setContent
-import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.bumptech.glide.Glide
@@ -58,20 +52,58 @@ class MainActivity : AppCompatActivity() {
                     colors = lightColors()
                 ) {
                     PokeList(it)
-                    FloatingActionButton(
-                        onClick = {
-                        Toast.makeText(
-                            this,
-                            "Deve abrir fav",
-                            Toast.LENGTH_LONG
-                        ).show()
-
-                    }) {
-
-                    }
+                    ExtendedFAB()
                 }
             }
         }
+    }
+
+    @Composable
+    private fun ExtendedFAB() {
+        var bitmap by remember { mutableStateOf<Bitmap?>(null) }
+
+        Glide.with(ContextAmbient.current).asBitmap()
+            .load("https://imagensemoldes.com.br/wp-content/uploads/2020/04/Pokebola-Pok%C3%A9mon-PNG.png")
+            .into(object : CustomTarget<Bitmap>() {
+                override fun onLoadCleared(placeholder: Drawable?) {}
+                override fun onResourceReady(
+                    resource: Bitmap,
+                    transition: com.bumptech.glide.request.transition.Transition<in Bitmap>?
+                ) {
+                    bitmap = resource
+                }
+            })
+
+        ExtendedFloatingActionButton(
+            backgroundColor = Color.Gray,
+            contentColor = Color.White,
+            icon ={ bitmap.let {
+                if (it != null) {
+                    Image(
+                        bitmap = it.asImageBitmap(),
+                        modifier = Modifier
+                            .size(20.dp),
+                        alignment = Alignment.BottomEnd,
+                        contentScale = ContentScale.Fit,
+                        alpha = 1f,
+                        colorFilter = null
+                    )
+                }
+            }
+
+            },
+            text = { Text(text = "FAVORITOS") },
+            modifier = Modifier
+                .padding(20.dp)
+                .background(Color.Transparent),
+            onClick = {
+                Toast.makeText(
+                    this,
+                    "Deve abrir fav",
+                    Toast.LENGTH_LONG
+                ).show()
+
+            })
     }
 
     @Composable
