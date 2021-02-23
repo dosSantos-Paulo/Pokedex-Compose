@@ -63,7 +63,6 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-
     }
 
     private fun getList() {
@@ -82,7 +81,8 @@ class MainActivity : AppCompatActivity() {
 
     @Composable
     private fun AlternaTiveWay() {
-        Toast.makeText(this, "Sem conexção, apenas seus favoritos estão ativos", Toast.LENGTH_LONG).show()
+        Toast.makeText(this, "Sem conexção, apenas seus favoritos estão ativos", Toast.LENGTH_LONG)
+            .show()
 
         loadPicture(
             url = "https://cdn.bulbagarden.net/upload/4/4b/Pok%C3%A9dex_logo.png"
@@ -190,7 +190,8 @@ class MainActivity : AppCompatActivity() {
 
                     })
                 }
-            })
+            }
+        )
 
 
     }

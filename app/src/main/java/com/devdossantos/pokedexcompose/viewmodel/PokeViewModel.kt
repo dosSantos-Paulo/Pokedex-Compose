@@ -1,19 +1,27 @@
 package com.devdossantos.pokedexcompose.viewmodel
 
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
-import com.devdossantos.pokedexcompose.api.repository.PokeRepository
 import androidx.lifecycle.liveData
 import com.devdossantos.pokedexcompose.api.model.response.pokemon.PokemonModel
+import com.devdossantos.pokedexcompose.api.repository.KtorRepository
+import com.devdossantos.pokedexcompose.api.utils.Constants.DEFAULT_API_LIMIT
+import com.devdossantos.pokedexcompose.api.utils.Constants.DEFAULT_API_OFFSET
 import kotlinx.coroutines.Dispatchers
 
 class PokeViewModel(
-    private val _repository: PokeRepository
+    private val _repository: KtorRepository
 ) : ViewModel() {
 
     fun getList() = liveData(Dispatchers.IO) {
         val pokemonList = mutableListOf<PokemonModel>()
-        val result = _repository.getPokemonList()
+        Log.d("ktor", "-> liveData")
+        val result = _repository.getPokemonList(
+            DEFAULT_API_LIMIT,
+            DEFAULT_API_OFFSET
+        )
+        Log.d("ktor", "result ok -> ${result.results[0].name}")
         result.results.forEach {
             pokemonList.add(getPokemonByName(it.name))
         }

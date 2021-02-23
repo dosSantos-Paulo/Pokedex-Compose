@@ -53,27 +53,39 @@ android {
 dependencies {
 
     def room_version = "2.2.6"
+    def ktorVersion = "1.5.1"
+    def composeVersion = "1.0.0-alpha10"
 
+    //Room
     implementation "androidx.room:room-runtime:$room_version"
     kapt "androidx.room:room-compiler:$room_version"
     implementation "androidx.room:room-ktx:$room_version"
     testImplementation "androidx.room:room-testing:$room_version"
 
-    implementation 'androidx.compose.material:material:1.0.0-alpha10'
-    implementation 'androidx.compose.material:material-icons-core:1.0.0-alpha10'
-    implementation 'androidx.compose.material:material-icons-extended:1.0.0-alpha10'
+    //Ktor
+    implementation "io.ktor:ktor-client-okhttp:$ktorVersion"
+    implementation "io.ktor:ktor-client-json:$ktorVersion"
+    implementation "io.ktor:ktor-client-serialization-jvm:$ktorVersion"
+    implementation "io.ktor:ktor-client-logging-jvm:$ktorVersion"
+    implementation "io.ktor:ktor-client-gson:$ktorVersion"
 
+    //Compose
+    implementation "androidx.compose.material:material:$composeVersion"
+    implementation "androidx.compose.material:material-icons-core:$composeVersion"
+    implementation "androidx.compose.material:material-icons-extended:$composeVersion"
+
+    //Glide + Picasso
     implementation 'com.github.bumptech.glide:glide:4.12.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
-
-    implementation 'com.balysv:material-ripple:1.0.2'
-    implementation 'com.google.android.material:material:1.2.1'
-
     implementation 'com.squareup.picasso:picasso:2.71828'
     implementation 'com.husseinala.neon:picasso:0.1.4'
     implementation 'com.husseinala.neon:glide:0.1.4'
 
+    implementation 'com.balysv:material-ripple:1.0.2'
+    implementation 'com.google.android.material:material:1.2.1'
+
+    //Koin
     implementation "org.koin:koin-androidx-scope:2.2.2"
     implementation "org.koin:koin-androidx-viewmodel:2.2.2"
     implementation "org.koin:koin-androidx-fragment:2.2.2"

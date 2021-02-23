@@ -16,7 +16,7 @@
         <activity
             android:name=".view.FavActivity"
             android:label="@string/title_activity_fav"
-            android:theme="@style/Theme.PokedexCompose.NoActionBar"></activity>
+            android:theme="@style/Theme.PokedexCompose.NoActionBar" />
         <activity
             android:name=".view.DetailActivity"
             android:label="@string/title_activity_detail"
