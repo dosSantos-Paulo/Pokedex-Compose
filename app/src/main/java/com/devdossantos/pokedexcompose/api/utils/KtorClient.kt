@@ -12,7 +12,7 @@ import io.ktor.http.*
 class KtorClient {
 
     companion object {
-        fun createHttpClient(): HttpClient {
+        fun createHttpClient(path: String): HttpClient {
             return HttpClient(OkHttp) {
 
                 install(JsonFeature) {
@@ -40,12 +40,12 @@ class KtorClient {
 
                     if (this.method != HttpMethod.Get) contentType(ContentType.Application.Json)
                     accept(ContentType.Application.Json)
-//                    url(
-//                        scheme = "https",
-//                        host = "pokeapi.co",
-//                        port = DEFAULT_PORT,
-//                        path = path
-//                    )
+                    url(
+                        scheme = "https",
+                        host = "pokeapi.co",
+                        port = DEFAULT_PORT,
+                        path = path
+                    )
                 }
             }
         }

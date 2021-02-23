@@ -8,12 +8,12 @@ import io.ktor.client.request.*
 
 class KtorRepository: KtorEndpoint {
     override suspend fun getPokemonList(limit: Int, offset: Int): ApiResponseModel {
-        val url = ("https://pokeapi.co/api/v2/pokemon?limit=$limit&offset=$offset")
-        return KtorClient.createHttpClient().get(url)
+        val url = ("api/v2/pokemon?limit=$limit&offset=$offset")
+        return KtorClient.createHttpClient(url).get()
     }
 
     override suspend fun getPokemonByName(name: String): PokemonModel {
-        val url = ("https://pokeapi.co/api/v2/pokemon/$name")
-        return KtorClient.createHttpClient().get(url)
+        val url = ("api/v2/pokemon/$name")
+        return KtorClient.createHttpClient(url).get()
     }
 }
