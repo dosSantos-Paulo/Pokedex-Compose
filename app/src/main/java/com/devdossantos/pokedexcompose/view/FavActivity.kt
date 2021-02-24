@@ -4,7 +4,6 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -12,6 +11,7 @@ import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,18 +22,14 @@ import androidx.compose.ui.platform.ContextAmbient
 import androidx.compose.ui.platform.setContent
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
-import com.devdossantos.pokedexcompose.api.model.response.pokemon.PokemonModel
-import com.devdossantos.pokedexcompose.database.AppDataBase
-import com.devdossantos.pokedexcompose.database.entity.PokemonEntity
-import com.devdossantos.pokedexcompose.database.repository.DataBaseRepository
-import com.devdossantos.pokedexcompose.database.viewmodel.DataBaseViewModel
+import com.devdossantos.pokedex.data.api.model.pokemon.PokemonModel
+import com.devdossantos.pokedex.data.database.entity.PokemonEntity
+import com.devdossantos.pokedexcompose.viewmodel.DataBaseViewModel
 import com.devdossantos.pokedexcompose.utils.GetBackgroundColor
 import com.devdossantos.pokedexcompose.utils.loadPicture
 import com.devdossantos.pokedexcompose.view.ui.theme.SharedItens
-import androidx.compose.material.Text
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 @ExperimentalFoundationApi

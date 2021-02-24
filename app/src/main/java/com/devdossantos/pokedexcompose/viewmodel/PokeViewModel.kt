@@ -4,10 +4,10 @@ package com.devdossantos.pokedexcompose.viewmodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
-import com.devdossantos.pokedexcompose.api.model.response.pokemon.PokemonModel
-import com.devdossantos.pokedexcompose.api.repository.KtorRepository
-import com.devdossantos.pokedexcompose.api.utils.Constants.DEFAULT_API_LIMIT
-import com.devdossantos.pokedexcompose.api.utils.Constants.DEFAULT_API_OFFSET
+import com.devdossantos.pokedex.data.api.model.pokemon.PokemonModel
+import com.devdossantos.pokedex.data.api.repository.KtorRepository
+import com.devdossantos.pokedex.data.api.utils.Constants.DEFAULT_API_LIMIT
+import com.devdossantos.pokedex.data.api.utils.Constants.DEFAULT_API_OFFSET
 import kotlinx.coroutines.Dispatchers
 
 class PokeViewModel(
