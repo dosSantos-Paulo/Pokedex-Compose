@@ -30,20 +30,15 @@ import com.devdossantos.pokedexcompose.view.ui.theme.SharedItens.Companion.getPo
 import androidx.compose.material.Text
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DetailActivity : AppCompatActivity() {
     private val _pokemon = getPokemon()
     private val _dbList = mutableListOf<PokemonEntity>()
-    private lateinit var _dbViewModel: DataBaseViewModel
+    private val _dbViewModel: DataBaseViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        _dbViewModel = ViewModelProvider(
-            this,
-            DataBaseViewModel.DataBaseViewModelFactory(
-                DataBaseRepository(AppDataBase.getDatabase(this).baseDao())
-            )
-        ).get(DataBaseViewModel::class.java)
 
         _dbViewModel.getAllPokemons().observe(this) {
             _dbList.addAll(it)

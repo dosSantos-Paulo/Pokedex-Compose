@@ -34,20 +34,15 @@ import com.devdossantos.pokedexcompose.utils.GetBackgroundColor
 import com.devdossantos.pokedexcompose.utils.loadPicture
 import com.devdossantos.pokedexcompose.view.ui.theme.SharedItens
 import androidx.compose.material.Text
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 @ExperimentalFoundationApi
 class FavActivity : AppCompatActivity() {
 
-    private lateinit var _dbViewModel: DataBaseViewModel
+    private val _dbViewModel: DataBaseViewModel by viewModel()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        _dbViewModel = ViewModelProvider(
-            this,
-            DataBaseViewModel.DataBaseViewModelFactory(
-                DataBaseRepository(AppDataBase.getDatabase(this).baseDao())
-            )
-        ).get(DataBaseViewModel::class.java)
 
         setContent {
             ExtendedFAB()
