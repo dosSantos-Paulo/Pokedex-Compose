@@ -2,8 +2,8 @@ package com.devdossantos.pokedexcompose
 
 import android.app.Application
 import com.devdossantos.pokedex.data.di.apiModule
+import com.devdossantos.pokedex.data.di.roomModule
 import com.devdossantos.pokedex.domain.di.module.domainModule
-import com.devdossantos.pokedexcompose.di.roomModule
 import com.devdossantos.pokedexcompose.di.viewModelModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger

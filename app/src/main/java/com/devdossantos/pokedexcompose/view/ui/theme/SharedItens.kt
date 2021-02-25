@@ -1,6 +1,6 @@
 package com.devdossantos.pokedexcompose.view.ui.theme
 
-import com.devdossantos.pokedex.data.database.entity.PokemonEntity
+import com.devdossantos.pokedex.domain.database.entity.PokemonEntity
 
 class SharedItens {
 

@@ -3,11 +3,15 @@ package com.devdossantos.pokedexcompose.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.liveData
-import com.devdossantos.pokedex.data.database.entity.PokemonEntity
-import com.devdossantos.pokedex.data.database.repository.DataBaseRepository
+import com.devdossantos.pokedex.domain.database.entity.PokemonEntity
+import com.devdossantos.pokedex.data.database.repository.DataBaseRepositoryImp
+import com.devdossantos.pokedex.domain.database.repository.DataBaseRepository
+import com.devdossantos.pokedex.domain.database.usecase.GetDataBaseUseCase
 import kotlinx.coroutines.Dispatchers
 
-class DataBaseViewModel(private val _repository: DataBaseRepository) : ViewModel() {
+class DataBaseViewModel(
+    private val _repository: GetDataBaseUseCase
+    ) : ViewModel() {
 
     fun addPokemon(pokemon: PokemonEntity) = liveData(Dispatchers.IO) {
         try {
@@ -40,12 +44,5 @@ class DataBaseViewModel(private val _repository: DataBaseRepository) : ViewModel
         catch (ex: Exception) {
             println(ex.message)
         }
-    }
-
-    class DataBaseViewModelFactory(private val _repo: DataBaseRepository): ViewModelProvider.Factory {
-        override fun <T : ViewModel?> create(modelClass: Class<T>): T {
-            return DataBaseViewModel(_repo) as T
-        }
-
     }
 }
