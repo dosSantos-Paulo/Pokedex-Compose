@@ -1,3 +1,4 @@
 rootProject.name = "PokedexCompose"
 include ':app'
 include ':data'
+include ':domain'
