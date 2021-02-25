@@ -4,14 +4,15 @@ package com.devdossantos.pokedexcompose.viewmodel
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.liveData
-import com.devdossantos.pokedex.data.api.model.pokemon.PokemonModel
-import com.devdossantos.pokedex.data.api.repository.KtorRepository
+import com.devdossantos.pokedex.data.api.repository.GetPokemonImp
+import com.devdossantos.pokedex.domain.api.model.pokemon.PokemonModel
 import com.devdossantos.pokedex.data.api.utils.Constants.DEFAULT_API_LIMIT
 import com.devdossantos.pokedex.data.api.utils.Constants.DEFAULT_API_OFFSET
+import com.devdossantos.pokedex.domain.api.usecase.GetPokemonUseCase
 import kotlinx.coroutines.Dispatchers
 
 class PokeViewModel(
-    private val _repository: KtorRepository
+    private val _repository: GetPokemonUseCase
 ) : ViewModel() {
 
     fun getList() = liveData(Dispatchers.IO) {

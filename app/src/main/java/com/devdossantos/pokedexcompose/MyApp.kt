@@ -2,6 +2,7 @@ package com.devdossantos.pokedexcompose
 
 import android.app.Application
 import com.devdossantos.pokedex.data.di.apiModule
+import com.devdossantos.pokedex.domain.di.module.domainModule
 import com.devdossantos.pokedexcompose.di.roomModule
 import com.devdossantos.pokedexcompose.di.viewModelModule
 import org.koin.android.ext.koin.androidContext
@@ -17,9 +18,10 @@ class MyApp : Application() {
             androidLogger()
             androidContext(this@MyApp)
             modules(listOf(
-                viewModelModule,
+                domainModule,
+                apiModule,
                 roomModule,
-                apiModule))
+                viewModelModule))
         }
     }
 }

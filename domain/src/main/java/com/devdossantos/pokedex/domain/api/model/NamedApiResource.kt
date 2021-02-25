@@ -1,4 +1,4 @@
-package com.devdossantos.pokedex.data.api.model
+package com.devdossantos.pokedex.domain.api.model
 
 
 data class NamedApiResource(

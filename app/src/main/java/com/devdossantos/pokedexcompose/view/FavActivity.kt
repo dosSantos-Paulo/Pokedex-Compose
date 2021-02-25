@@ -24,7 +24,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
-import com.devdossantos.pokedex.data.api.model.pokemon.PokemonModel
+import com.devdossantos.pokedex.domain.api.model.pokemon.PokemonModel
 import com.devdossantos.pokedex.data.database.entity.PokemonEntity
 import com.devdossantos.pokedexcompose.viewmodel.DataBaseViewModel
 import com.devdossantos.pokedexcompose.utils.GetBackgroundColor
