@@ -17,7 +17,7 @@ import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.setContent
 import androidx.compose.ui.unit.dp
-import com.devdossantos.pokedex.domain.database.entity.PokemonEntity
+import com.devdossantos.pokedex.domain.entity.PokemonEntity
 import com.devdossantos.pokedexcompose.viewmodel.DataBaseViewModel
 import com.devdossantos.pokedexcompose.utils.GetBackgroundColor
 import com.devdossantos.pokedexcompose.utils.loadPicture

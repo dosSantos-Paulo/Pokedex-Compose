@@ -1,6 +1,6 @@
-package com.devdossantos.pokedex.domain.database.repository
+package com.devdossantos.pokedex.domain.repository
 
-import com.devdossantos.pokedex.domain.database.entity.PokemonEntity
+import com.devdossantos.pokedex.domain.entity.PokemonEntity
 
 interface DataBaseRepository {
     suspend fun addPokemon(pokemon: PokemonEntity)

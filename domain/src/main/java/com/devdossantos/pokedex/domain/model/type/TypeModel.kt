@@ -1,4 +1,4 @@
-package com.devdossantos.pokedex.domain.api.model.type
+package com.devdossantos.pokedex.domain.model.type
 
 data class TypeModel (
     val slot: Int,

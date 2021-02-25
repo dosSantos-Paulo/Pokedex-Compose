@@ -1,4 +1,4 @@
-package com.devdossantos.pokedex.domain.api.model
+package com.devdossantos.pokedex.domain.model.response
 
 data class ApiResponseModel(
     val count: Int,

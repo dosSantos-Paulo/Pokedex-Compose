@@ -5,7 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.devdossantos.pokedex.data.database.dao.BaseDao
-import com.devdossantos.pokedex.domain.database.entity.PokemonEntity
+import com.devdossantos.pokedex.domain.entity.PokemonEntity
 
 @Database(
     entities = [PokemonEntity::class],

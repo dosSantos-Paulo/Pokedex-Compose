@@ -1,11 +1,11 @@
-package com.devdossantos.pokedex.domain.database.usecase
+package com.devdossantos.pokedex.domain.usecase
 
-import com.devdossantos.pokedex.domain.database.entity.PokemonEntity
-import com.devdossantos.pokedex.domain.database.repository.DataBaseRepository
+import com.devdossantos.pokedex.domain.entity.PokemonEntity
+import com.devdossantos.pokedex.domain.repository.DataBaseRepository
 
 class GetDataBaseUseCaseImp(
     private val _repository : DataBaseRepository
-) : GetDataBaseUseCase{
+) : GetDataBaseUseCase {
     override suspend fun addPokemon(pokemon: PokemonEntity) {
         return _repository.addPokemon(pokemon)
     }

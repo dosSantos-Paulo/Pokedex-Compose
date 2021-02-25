@@ -1,8 +1,8 @@
-package com.devdossantos.pokedex.domain.api.usecase
+package com.devdossantos.pokedex.domain.usecase
 
-import com.devdossantos.pokedex.domain.api.model.ApiResponseModel
-import com.devdossantos.pokedex.domain.api.model.pokemon.PokemonModel
-import com.devdossantos.pokedex.domain.api.repository.GetPokemonRepository
+import com.devdossantos.pokedex.domain.model.response.ApiResponseModel
+import com.devdossantos.pokedex.domain.model.pokemon.PokemonModel
+import com.devdossantos.pokedex.domain.repository.GetPokemonRepository
 
 class GetPokemonUseCaseImp(
     private val _repository: GetPokemonRepository

@@ -1,4 +1,4 @@
-package com.devdossantos.pokedex.domain.database.entity
+package com.devdossantos.pokedex.domain.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

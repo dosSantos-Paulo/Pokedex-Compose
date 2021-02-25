@@ -1,7 +1,7 @@
-package com.devdossantos.pokedex.domain.api.repository
+package com.devdossantos.pokedex.domain.repository
 
-import com.devdossantos.pokedex.domain.api.model.ApiResponseModel
-import com.devdossantos.pokedex.domain.api.model.pokemon.PokemonModel
+import com.devdossantos.pokedex.domain.model.response.ApiResponseModel
+import com.devdossantos.pokedex.domain.model.pokemon.PokemonModel
 
 interface GetPokemonRepository {
     suspend fun getPokemonList(

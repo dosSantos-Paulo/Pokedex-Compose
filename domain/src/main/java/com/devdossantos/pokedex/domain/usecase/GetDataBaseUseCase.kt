@@ -1,6 +1,6 @@
-package com.devdossantos.pokedex.domain.database.usecase
+package com.devdossantos.pokedex.domain.usecase
 
-import com.devdossantos.pokedex.domain.database.entity.PokemonEntity
+import com.devdossantos.pokedex.domain.entity.PokemonEntity
 
 interface GetDataBaseUseCase {
     suspend fun addPokemon(pokemon: PokemonEntity)

@@ -1,9 +1,9 @@
 package com.devdossantos.pokedex.data.api.repository
 
-import com.devdossantos.pokedex.domain.api.model.ApiResponseModel
-import com.devdossantos.pokedex.domain.api.model.pokemon.PokemonModel
+import com.devdossantos.pokedex.domain.model.response.ApiResponseModel
+import com.devdossantos.pokedex.domain.model.pokemon.PokemonModel
 import com.devdossantos.pokedex.data.api.utils.KtorClient
-import com.devdossantos.pokedex.domain.api.repository.GetPokemonRepository
+import com.devdossantos.pokedex.domain.repository.GetPokemonRepository
 import io.ktor.client.request.*
 
 

@@ -1,4 +1,4 @@
-package com.devdossantos.pokedex.domain.api.model.sprite
+package com.devdossantos.pokedex.domain.model.sprite
 
 data class SpriteModel(
     val front_default: String,

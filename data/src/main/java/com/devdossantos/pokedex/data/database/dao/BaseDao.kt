@@ -3,7 +3,7 @@ package com.devdossantos.pokedex.data.database.dao
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
-import com.devdossantos.pokedex.domain.database.entity.PokemonEntity
+import com.devdossantos.pokedex.domain.entity.PokemonEntity
 
 @Dao
 interface BaseDao {
