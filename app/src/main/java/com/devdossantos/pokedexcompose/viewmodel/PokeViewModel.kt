@@ -8,28 +8,55 @@ import com.devdossantos.pokedex.domain.model.pokemon.PokemonModel
 import com.devdossantos.pokedex.data.api.utils.Constants.DEFAULT_API_LIMIT
 import com.devdossantos.pokedex.data.api.utils.Constants.DEFAULT_API_OFFSET
 import com.devdossantos.pokedex.domain.usecase.GetPokemonUseCase
+import com.devdossantos.pokedex.domain.utils.Result
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collect
 
 class PokeViewModel(
-    private val _repository: GetPokemonUseCase
+    private val _useCase: GetPokemonUseCase
 ) : ViewModel() {
 
     fun getList() = liveData(Dispatchers.IO) {
         val pokemonList = mutableListOf<PokemonModel>()
         Log.d("ktor", "-> liveData")
-        val result = _repository.getPokemonList(
+        _useCase.getPokemonList(
             DEFAULT_API_LIMIT,
             DEFAULT_API_OFFSET
-        )
-        Log.d("ktor", "result ok -> ${result.results[0].name}")
-        result.results.forEach {
-            pokemonList.add(getPokemonByName(it.name))
+        ).collect {result ->
+            when(result){
+                is Result.Success -> {
+                    Log.d("API", "api error -> ${ result.data.results}")
+                    result.data.results.forEach {
+                        val pokemon = getPokemonByName(it.name)
+                        if (pokemon != null) {
+                            pokemonList.add(pokemon)
+                        }
+                    }
+                    emit(pokemonList)
+                }
+                is Result.Error -> {
+                    Log.d("ERROR", "api error -> ${result.error}")
+                }
+            }
         }
-        emit(pokemonList)
+
     }
 
-    suspend fun getPokemonByName(name: String): PokemonModel {
-        return _repository.getPokemonByName(name)
+    suspend fun getPokemonByName(name: String): PokemonModel? {
+        var pokemon: PokemonModel? = null
+
+        _useCase.getPokemonByName(name).collect { result ->
+            when(result){
+                is Result.Success -> {
+                    pokemon = result.data
+                }
+                is Result.Error -> {
+                    Log.d("ERROR", "api error -> ${result.error}")
+                }
+            }
+        }
+
+        return pokemon
     }
 
 }
