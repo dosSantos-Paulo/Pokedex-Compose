@@ -1,4 +1,4 @@
-package com.devdossantos.pokedexcompose.view
+package com.devdossantos.pokedexcompose.ui.favorite
 
 import android.content.Intent
 import android.graphics.Bitmap
@@ -26,10 +26,10 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.CustomTarget
 import com.devdossantos.pokedex.domain.model.pokemon.PokemonModel
 import com.devdossantos.pokedex.domain.entity.PokemonEntity
-import com.devdossantos.pokedexcompose.viewmodel.DataBaseViewModel
 import com.devdossantos.pokedexcompose.utils.GetBackgroundColor
 import com.devdossantos.pokedexcompose.utils.loadPicture
-import com.devdossantos.pokedexcompose.view.ui.theme.SharedItens
+import com.devdossantos.pokedexcompose.ui.detail.DetailActivity
+import com.devdossantos.pokedexcompose.ui.theme.SharedItens
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 @ExperimentalFoundationApi

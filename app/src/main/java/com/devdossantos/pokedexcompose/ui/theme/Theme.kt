@@ -5,40 +5,33 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.tooling.preview.Preview
 
 private val DarkColorPalette = darkColors(
-    primary = Color.White,
-    primaryVariant = Color(0xFFC20029),
-    onPrimary = Color.Black,
-    secondary = Color.White,
-    onSecondary = Color.Black,
-    background = Color(0xFFEEEEEE),
-    onBackground = Color.Black,
-    surface = Color.White,
-    onSurface = Color.Black,
-    error = Color(0xFFD00036),
-    onError = Color.White
+    primary = purple200,
+    primaryVariant = purple700,
+    secondary = teal200
 )
 
 private val LightColorPalette = lightColors(
-    primary = Color.White,
-    primaryVariant = Color(0xFFC20029),
-    onPrimary = Color.Black,
-    secondary = Color.White,
-    onSecondary = Color.Black,
-    background = Color(0xFFEEEEEE),
-    onBackground = Color.Black,
-    surface = Color.White,
-    onSurface = Color.Black,
-    error = Color(0xFFD00036),
-    onError = Color.White
+    primary = purple500,
+    primaryVariant = purple700,
+    secondary = teal200
 
+    /* Other default colors to override
+    background = Color.White,
+    surface = Color.White,
+    onPrimary = Color.White,
+    onSecondary = Color.Black,
+    onBackground = Color.Black,
+    onSurface = Color.Black,
+    */
 )
 
 @Composable
-fun PokedexComposeTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable() () -> Unit) {
+fun PokedexComposeTheme(
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    content: @Composable() () -> Unit
+) {
     val colors = if (darkTheme) {
         DarkColorPalette
     } else {
@@ -46,9 +39,9 @@ fun PokedexComposeTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Co
     }
 
     MaterialTheme(
-            colors = colors,
-            typography = typography,
-            shapes = shapes,
-            content = content
+        colors = colors,
+        typography = typography,
+        shapes = shapes,
+        content = content
     )
 }

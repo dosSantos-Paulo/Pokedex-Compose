@@ -1,4 +1,4 @@
-package com.devdossantos.pokedexcompose.view.ui.theme
+package com.devdossantos.pokedexcompose.ui.theme
 
 import com.devdossantos.pokedex.domain.entity.PokemonEntity
 

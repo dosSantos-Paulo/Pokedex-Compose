@@ -1,4 +1,4 @@
-package com.devdossantos.pokedexcompose.viewmodel
+package com.devdossantos.pokedexcompose.ui.main
 
 
 import android.util.Log
@@ -25,7 +25,6 @@ class PokeViewModel(
         ).collect {result ->
             when(result){
                 is Result.Success -> {
-                    Log.d("API", "api error -> ${ result.data.results}")
                     result.data.results.forEach {
                         val pokemon = getPokemonByName(it.name)
                         if (pokemon != null) {

@@ -1,4 +1,4 @@
-package com.devdossantos.pokedexcompose.view
+package com.devdossantos.pokedexcompose.ui.main
 
 import android.content.Context
 import android.content.Intent
@@ -31,8 +31,9 @@ import com.devdossantos.pokedex.domain.model.pokemon.PokemonModel
 import com.devdossantos.pokedex.domain.entity.PokemonEntity
 import com.devdossantos.pokedexcompose.utils.GetBackgroundColor
 import com.devdossantos.pokedexcompose.utils.loadPicture
-import com.devdossantos.pokedexcompose.view.ui.theme.SharedItens.Companion.setPokemon
-import com.devdossantos.pokedexcompose.viewmodel.PokeViewModel
+import com.devdossantos.pokedexcompose.ui.detail.DetailActivity
+import com.devdossantos.pokedexcompose.ui.favorite.FavActivity
+import com.devdossantos.pokedexcompose.ui.theme.SharedItens.Companion.setPokemon
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 

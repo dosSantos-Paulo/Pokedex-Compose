@@ -1,4 +1,4 @@
-package com.devdossantos.pokedexcompose.view
+package com.devdossantos.pokedexcompose.ui.detail
 
 import android.os.Bundle
 import android.widget.Toast
@@ -18,11 +18,11 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.setContent
 import androidx.compose.ui.unit.dp
 import com.devdossantos.pokedex.domain.entity.PokemonEntity
-import com.devdossantos.pokedexcompose.viewmodel.DataBaseViewModel
+import com.devdossantos.pokedexcompose.ui.favorite.DataBaseViewModel
 import com.devdossantos.pokedexcompose.utils.GetBackgroundColor
 import com.devdossantos.pokedexcompose.utils.loadPicture
-import com.devdossantos.pokedexcompose.view.ui.theme.PokedexComposeTheme
-import com.devdossantos.pokedexcompose.view.ui.theme.SharedItens.Companion.getPokemon
+import com.devdossantos.pokedexcompose.ui.theme.PokedexComposeTheme
+import com.devdossantos.pokedexcompose.ui.theme.SharedItens.Companion.getPokemon
 import androidx.compose.material.Text
 import androidx.compose.ui.text.font.FontWeight
 import org.koin.androidx.viewmodel.ext.android.viewModel

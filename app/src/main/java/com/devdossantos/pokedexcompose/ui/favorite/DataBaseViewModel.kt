@@ -1,4 +1,4 @@
-package com.devdossantos.pokedexcompose.viewmodel
+package com.devdossantos.pokedexcompose.ui.favorite
 
 import android.util.Log
 import androidx.lifecycle.ViewModel
