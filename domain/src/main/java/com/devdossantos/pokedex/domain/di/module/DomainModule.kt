@@ -9,7 +9,7 @@ import org.koin.dsl.module
 
 val useCaseModules = module {
     single { GetPokemonUseCaseImp(get(), get()) as GetPokemonUseCase }
-    single { GetDataBaseUseCaseImp(get()) as GetDataBaseUseCase }
+    single { GetDataBaseUseCaseImp(get(), get()) as GetDataBaseUseCase }
 }
 
 val errorHandlerModules = module {
