@@ -4,11 +4,13 @@ import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.GridCells
 import androidx.compose.foundation.lazy.LazyVerticalGrid
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.Text
@@ -18,8 +20,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.ContextAmbient
-import androidx.compose.ui.platform.setContent
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.bumptech.glide.Glide
@@ -80,10 +80,12 @@ class FavActivity : AppCompatActivity() {
                     contentColor = Color.White,
                     icon = {
                         loadPicture(
-                            url = "https://lh3.googleusercontent.com/proxy/uu3X0tP6QilOCFi0t47FKedqXiMDOmmGRjbk87wTXsH2kacxmab-fGheC6bu97GT-TKIVY3m5R7OPlBzvhz1yfI83XM-geR7tBxGP-ncmTMNPm0"
+                            url = "https://lh3.googleusercontent.com/proxy/uu3X0tP6QilOCFi0t47FKedqXiMDOmmGRjbk87wTXsH2kacxmab-fGheC6bu97GT-TKIVY3m5R7OPlBzvhz1yfI83XM-geR7tBxGP-ncmTMNPm0",
+                            context = this
                         ).value?.let {
                             Image(
                                 bitmap = it.asImageBitmap(),
+                                contentDescription = "PokeBall Icon",
                                 modifier = Modifier
                                     .size(30.dp),
                                 alignment = Alignment.BottomEnd,
@@ -130,7 +132,7 @@ class FavActivity : AppCompatActivity() {
         var favoriteColor = remember { mutableStateOf(Color.Transparent) }
         var bitmap by remember { mutableStateOf<Bitmap?>(null) }
 
-        Glide.with(ContextAmbient.current).asBitmap()
+        Glide.with(this@FavActivity).asBitmap()
             .load(pokemon.sprites)
             .into(object : CustomTarget<Bitmap>() {
                 override fun onLoadCleared(placeholder: Drawable?) {}
@@ -182,7 +184,9 @@ class FavActivity : AppCompatActivity() {
                             color = GetBackgroundColor().getColor(pokemon.types1),
                             style = MaterialTheme.typography.h6
                         )
-                        Providers(AmbientContentAlpha provides ContentAlpha.high) {
+                        CompositionLocalProvider(
+                            LocalContentAlpha provides ContentAlpha.high
+                        ){
                             Text(text = pokemon.types1, style = MaterialTheme.typography.body2)
                             Text(text = pokemon.types2, style = MaterialTheme.typography.body2)
                         }
@@ -191,6 +195,7 @@ class FavActivity : AppCompatActivity() {
                     bitmap?.let {
                         Image(
                             bitmap = it.asImageBitmap(),
+                            contentDescription = "Pokemon Image",
                             modifier = Modifier
                                 .height(120.dp)
                                 .width(120.dp)

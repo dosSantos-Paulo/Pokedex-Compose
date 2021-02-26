@@ -2,6 +2,7 @@ package com.devdossantos.pokedexcompose.ui.detail
 
 import android.os.Bundle
 import android.widget.Toast
+import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
@@ -15,16 +16,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.setContent
 import androidx.compose.ui.unit.dp
 import com.devdossantos.pokedex.domain.entity.PokemonEntity
 import com.devdossantos.pokedexcompose.ui.favorite.DataBaseViewModel
 import com.devdossantos.pokedexcompose.utils.GetBackgroundColor
-import com.devdossantos.pokedexcompose.utils.loadPicture
 import com.devdossantos.pokedexcompose.ui.theme.PokedexComposeTheme
 import com.devdossantos.pokedexcompose.ui.theme.SharedItens.Companion.getPokemon
 import androidx.compose.material.Text
+import androidx.compose.runtime.internal.composableLambda
 import androidx.compose.ui.text.font.FontWeight
+import com.devdossantos.pokedexcompose.utils.loadPicture
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DetailActivity : AppCompatActivity() {
@@ -74,10 +75,12 @@ class DetailActivity : AppCompatActivity() {
                     contentColor = Color.White,
                     icon = {
                         loadPicture(
-                            url = "https://lh3.googleusercontent.com/proxy/uu3X0tP6QilOCFi0t47FKedqXiMDOmmGRjbk87wTXsH2kacxmab-fGheC6bu97GT-TKIVY3m5R7OPlBzvhz1yfI83XM-geR7tBxGP-ncmTMNPm0"
+                            url = "https://lh3.googleusercontent.com/proxy/uu3X0tP6QilOCFi0t47FKedqXiMDOmmGRjbk87wTXsH2kacxmab-fGheC6bu97GT-TKIVY3m5R7OPlBzvhz1yfI83XM-geR7tBxGP-ncmTMNPm0",
+                            context = this
                         ).value?.let {
                             Image(
                                 bitmap = it.asImageBitmap(),
+                                contentDescription = "Pokeball Icon",
                                 modifier = Modifier
                                     .size(30.dp),
                                 alignment = Alignment.BottomEnd,
@@ -142,7 +145,9 @@ class DetailActivity : AppCompatActivity() {
                             color = GetBackgroundColor().getColor(_pokemon.types1),
                             style = MaterialTheme.typography.h4
                         )
-                        Providers(AmbientContentAlpha provides ContentAlpha.high) {
+                        CompositionLocalProvider(
+                            LocalContentAlpha provides ContentAlpha.high
+                        ){
                             Box(
                                 modifier = Modifier
                                     .fillMaxWidth()
@@ -203,10 +208,12 @@ class DetailActivity : AppCompatActivity() {
 
 
                     loadPicture(
-                        url = _pokemon.sprites!!
+                        url = _pokemon.sprites!!,
+                        context = this@DetailActivity
                     ).value?.let {
                         Image(
                             bitmap = it.asImageBitmap(),
+                            contentDescription = "Pokemon Image",
                             modifier = Modifier
                                 .height(250.dp)
                                 .width(250.dp)
@@ -222,10 +229,12 @@ class DetailActivity : AppCompatActivity() {
 
 
                     loadPicture(
-                        url = "https://pngimg.com/uploads/star/star_PNG41515.png"
+                        url = "https://pngimg.com/uploads/star/star_PNG41515.png",
+                        context = this@DetailActivity
                     ).value?.let {
                         Image(
                             bitmap = it.asImageBitmap(),
+                            contentDescription = "Star Icon",
                             modifier = Modifier
                                 .padding(16.dp)
                                 .height(40.dp)
@@ -240,7 +249,7 @@ class DetailActivity : AppCompatActivity() {
                             alignment = Alignment.TopEnd,
                             contentScale = ContentScale.Fit,
                             alpha = 1f,
-                            colorFilter = ColorFilter(getStarColor(remember.value), BlendMode.SrcIn)
+                            colorFilter = ColorFilter.tint(getStarColor(remember.value), BlendMode.SrcIn)
                         )
                     }
 

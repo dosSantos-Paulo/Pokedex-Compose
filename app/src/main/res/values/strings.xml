@@ -2,4 +2,5 @@
     <string name="app_name">PokedexCompose</string>
     <string name="title_activity_detail">My Compose App</string>
     <string name="title_activity_fav">My Compose App</string>
+    <string name="title_activity_main2">My Compose App</string>
 </resources>
