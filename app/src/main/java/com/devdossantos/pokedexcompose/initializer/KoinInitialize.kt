@@ -1,23 +1,21 @@
-package com.devdossantos.pokedexcompose
+package com.devdossantos.pokedexcompose.initializer
 
-import android.app.Application
+import android.content.Context
+import androidx.startup.Initializer
 import com.devdossantos.pokedex.data.di.apiModule
 import com.devdossantos.pokedex.data.di.roomModule
 import com.devdossantos.pokedex.domain.di.module.errorHandlerModules
 import com.devdossantos.pokedex.domain.di.module.useCaseModules
 import com.devdossantos.pokedexcompose.di.viewModelModule
 import org.koin.android.ext.koin.androidContext
-import org.koin.android.ext.koin.androidLogger
+import org.koin.core.KoinApplication
 import org.koin.core.context.startKoin
 
-class MyApp : Application() {
+class KoinInitialize : Initializer<KoinApplication> {
 
-    override fun onCreate() {
-        super.onCreate()
-
-        startKoin{
-            androidLogger()
-            androidContext(this@MyApp)
+    override fun create(context: Context): KoinApplication {
+        return startKoin{
+            androidContext(context)
             modules(listOf(
                 useCaseModules,
                 errorHandlerModules,
@@ -25,5 +23,9 @@ class MyApp : Application() {
                 roomModule,
                 viewModelModule))
         }
+    }
+
+    override fun dependencies(): MutableList<Class<out Initializer<*>>> {
+        return mutableListOf()
     }
 }
